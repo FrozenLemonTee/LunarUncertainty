@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  check:
+    name: check, format and test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up MoonBit
+        run: |
+          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
+          echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
+
+      - name: Update dependencies
+        run: moon update
+
+      - name: Check (deny warnings)
+        run: moon check --deny-warn
+
+      - name: Generated interfaces are up to date
+        run: |
+          moon info
+          git diff --exit-code
+
+      - name: Formatting is clean
+        run: |
+          moon fmt
+          git diff --exit-code
+
+      - name: Test
+        run: moon test
+
+      - name: Coverage report
+        run: |
+          moon test --enable-coverage
+          moon coverage analyze || true

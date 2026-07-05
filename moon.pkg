@@ -1,0 +1,2 @@
+// Root facade package for LunarUncertainty.
+// Public implementation lives in package directories such as `measure/`.
