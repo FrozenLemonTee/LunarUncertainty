@@ -1,6 +1,10 @@
 import {
   "FrozenLemonTee/LunarUncertainty/measure",
+  "FrozenLemonTee/LunarUnits/quantities/qelectromagnetism",
   "FrozenLemonTee/LunarUnits/quantities/qgeometry",
+  "FrozenLemonTee/LunarUnits/quantities/qmass",
   "FrozenLemonTee/LunarUnits/quantities/qsi",
+  "FrozenLemonTee/LunarUnits/units/mass",
+  "FrozenLemonTee/LunarUnits/units/mechanics",
   "FrozenLemonTee/LunarUnits/units/si",
 }

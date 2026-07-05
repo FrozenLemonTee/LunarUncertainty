@@ -40,8 +40,12 @@ Then import the measurement package and the LunarUnits packages you need:
 ```moonbit
 import {
   "FrozenLemonTee/LunarUncertainty/measure",
+  "FrozenLemonTee/LunarUnits/quantities/qelectromagnetism",
   "FrozenLemonTee/LunarUnits/quantities/qgeometry",
+  "FrozenLemonTee/LunarUnits/quantities/qmass",
   "FrozenLemonTee/LunarUnits/quantities/qsi",
+  "FrozenLemonTee/LunarUnits/units/mass",
+  "FrozenLemonTee/LunarUnits/units/mechanics",
 }
 ```
 
@@ -74,6 +78,70 @@ let length = @measure.MeasuredQuantity::new(
 
 Dimension errors still come from LunarUnits, so `10 m ± 1 s` is rejected with
 the same dimension mismatch information users get from `Quantity`.
+
+## Relative Uncertainty
+
+When an instrument reports a relative standard uncertainty, construct the
+measured quantity directly from that ratio:
+
+```moonbit
+let length = @measure.MeasuredQuantity::from_relative(
+  @qgeometry.meters(10.0),
+  0.02,
+)
+// Stored as 10.0 ± 0.2 m.
+```
+
+The `checked_from_relative` variant returns `None` when the relative uncertainty
+is negative.
+
+## More Examples
+
+Density keeps the mass and volume units attached:
+
+```moonbit
+let mass = @measure.MeasuredQuantity::new(
+  @qmass.kilograms(12.0),
+  @qmass.kilograms(0.1),
+)
+let volume = @measure.MeasuredQuantity::new(
+  @qgeometry.liters(3.0),
+  @qgeometry.liters(0.05),
+)
+let density = mass.div(volume)
+let density_si = density.to(@mass.kilogram_per_cubic_meter)
+// density_si.value() == 4000.0
+```
+
+Electrical power composes voltage and current into watts:
+
+```moonbit
+let voltage = @measure.MeasuredQuantity::new(
+  @qelectromagnetism.volts(12.0),
+  @qelectromagnetism.volts(0.1),
+)
+let current = @measure.MeasuredQuantity::new(
+  @qsi.amperes(2.0),
+  @qsi.amperes(0.02),
+)
+let power = voltage.mul(current)
+// power.unit().is_compatible(@mechanics.watt)
+```
+
+## Error Model
+
+- `NegativeUncertainty`: raised when an absolute or relative standard
+  uncertainty is negative.
+- `ZeroNominalForRelativeUncertainty`: raised by multiplication, division and
+  non-zero powers when relative uncertainty propagation needs a zero nominal
+  value.
+- LunarUnits `DimensionMismatch`: raised by construction, conversion, addition
+  and subtraction when units are not dimensionally compatible.
+
+Most recoverable paths also have `checked_*` variants. For example,
+`checked_mul`, `checked_div`, `checked_pow` and
+`checked_relative_uncertainty` return `None` for zero-nominal relative
+propagation cases.
 
 ## Statistical Boundary
 
