@@ -50,8 +50,8 @@ pub suberror ZeroNominalForRelativeUncertainty {
 /// ```mbt check
 /// test {
 ///   let length = MeasuredQuantity::new(
-///     @quantity.Quantity::new(10.0, @si.meter),
-///     @quantity.Quantity::new(20.0, @geometry.centimeter),
+///     @qgeometry.meters(10.0),
+///     @qgeometry.centimeters(20.0),
 ///   )
 ///   assert_eq(length.value(), 10.0)
 ///   assert_eq(length.uncertainty(), 0.2)
@@ -138,8 +138,8 @@ fn relative_component(
 /// ```mbt check
 /// test {
 ///   let length = MeasuredQuantity::new(
-///     @quantity.Quantity::new(10.0, @si.meter),
-///     @quantity.Quantity::new(20.0, @geometry.centimeter),
+///     @qgeometry.meters(10.0),
+///     @qgeometry.centimeters(20.0),
 ///   )
 ///   assert_eq(length.uncertainty(), 0.2)
 /// }
@@ -160,8 +160,8 @@ pub fn MeasuredQuantity::new(
 ///
 /// ```mbt check
 /// test {
-///   let length = @quantity.Quantity::new(10.0, @si.meter)
-///   let time = @quantity.Quantity::new(1.0, @si.second)
+///   let length = @qgeometry.meters(10.0)
+///   let time = @qsi.seconds(1.0)
 ///   assert_true(MeasuredQuantity::checked_new(length, time) is None)
 /// }
 /// ```

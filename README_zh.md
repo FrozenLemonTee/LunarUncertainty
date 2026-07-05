@@ -34,8 +34,8 @@ moon add FrozenLemonTee/LunarUncertainty
 ```moonbit
 import {
   "FrozenLemonTee/LunarUncertainty/measure",
-  "FrozenLemonTee/LunarUnits/core/quantity",
-  "FrozenLemonTee/LunarUnits/units/si",
+  "FrozenLemonTee/LunarUnits/quantities/qgeometry",
+  "FrozenLemonTee/LunarUnits/quantities/qsi",
 }
 ```
 
@@ -43,12 +43,12 @@ import {
 
 ```moonbit
 let distance = @measure.MeasuredQuantity::new(
-  @quantity.Quantity::new(10.0, @si.meter),
-  @quantity.Quantity::new(0.2, @si.meter),
+  @qgeometry.meters(10.0),
+  @qgeometry.meters(0.2),
 )
 let time = @measure.MeasuredQuantity::new(
-  @quantity.Quantity::new(2.0, @si.second),
-  @quantity.Quantity::new(0.1, @si.second),
+  @qsi.seconds(2.0),
+  @qsi.seconds(0.1),
 )
 
 let speed = distance.div(time)
@@ -60,8 +60,8 @@ let text = @measure.format_measured_quantity(speed)
 
 ```moonbit
 let length = @measure.MeasuredQuantity::new(
-  @quantity.Quantity::new(10.0, @si.meter),
-  @quantity.Quantity::new(20.0, @geometry.centimeter),
+  @qgeometry.meters(10.0),
+  @qgeometry.centimeters(20.0),
 )
 // 内部规范化为 10.0 ± 0.2 m。
 ```

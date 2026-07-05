@@ -2,12 +2,12 @@
 /// A speed measurement from distance and time measurements.
 test "speed measurement example" {
   let distance = @measure.MeasuredQuantity::new(
-    @quantity.Quantity::new(10.0, @si.meter),
-    @quantity.Quantity::new(0.2, @si.meter),
+    @qgeometry.meters(10.0),
+    @qgeometry.meters(0.2),
   )
   let time = @measure.MeasuredQuantity::new(
-    @quantity.Quantity::new(2.0, @si.second),
-    @quantity.Quantity::new(0.1, @si.second),
+    @qsi.seconds(2.0),
+    @qsi.seconds(0.1),
   )
   let speed = distance.div(time)
   assert_eq(speed.value(), 5.0)

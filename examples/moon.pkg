@@ -1,5 +1,6 @@
 import {
   "FrozenLemonTee/LunarUncertainty/measure",
-  "FrozenLemonTee/LunarUnits/core/quantity",
+  "FrozenLemonTee/LunarUnits/quantities/qgeometry",
+  "FrozenLemonTee/LunarUnits/quantities/qsi",
   "FrozenLemonTee/LunarUnits/units/si",
 }

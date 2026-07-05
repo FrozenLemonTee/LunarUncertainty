@@ -11,8 +11,8 @@ fn assert_close(actual : Double, expected : Double) -> Unit raise {
 ///|
 test "construct normalizes compatible uncertainty unit" {
   let length = MeasuredQuantity::new(
-    @quantity.Quantity::new(10.0, @si.meter),
-    @quantity.Quantity::new(20.0, @geometry.centimeter),
+    @qgeometry.meters(10.0),
+    @qgeometry.centimeters(20.0),
   )
   assert_eq(length.value(), 10.0)
   assert_eq(length.uncertainty(), 0.2)
@@ -23,11 +23,7 @@ test "construct normalizes compatible uncertainty unit" {
 test "construct rejects incompatible uncertainty dimension" {
   let mut caught = false
   try
-    MeasuredQuantity::new(
-      @quantity.Quantity::new(10.0, @si.meter),
-      @quantity.Quantity::new(1.0, @si.second),
-    )
-    |> ignore
+    MeasuredQuantity::new(@qgeometry.meters(10.0), @qsi.seconds(1.0)) |> ignore
   catch {
     @quantity.DimensionMismatch((expected, actual)) => {
       caught = true
@@ -54,10 +50,7 @@ test "checked constructors return none for invalid inputs" {
     MeasuredQuantity::checked_from_parts(10.0, -0.2, @si.meter) is None,
   )
   assert_true(
-    MeasuredQuantity::checked_new(
-      @quantity.Quantity::new(10.0, @si.meter),
-      @quantity.Quantity::new(1.0, @si.second),
-    )
+    MeasuredQuantity::checked_new(@qgeometry.meters(10.0), @qsi.seconds(1.0))
     is None,
   )
 }

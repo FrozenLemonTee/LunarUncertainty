@@ -40,8 +40,8 @@ Then import the measurement package and the LunarUnits packages you need:
 ```moonbit
 import {
   "FrozenLemonTee/LunarUncertainty/measure",
-  "FrozenLemonTee/LunarUnits/core/quantity",
-  "FrozenLemonTee/LunarUnits/units/si",
+  "FrozenLemonTee/LunarUnits/quantities/qgeometry",
+  "FrozenLemonTee/LunarUnits/quantities/qsi",
 }
 ```
 
@@ -49,12 +49,12 @@ import {
 
 ```moonbit
 let distance = @measure.MeasuredQuantity::new(
-  @quantity.Quantity::new(10.0, @si.meter),
-  @quantity.Quantity::new(0.2, @si.meter),
+  @qgeometry.meters(10.0),
+  @qgeometry.meters(0.2),
 )
 let time = @measure.MeasuredQuantity::new(
-  @quantity.Quantity::new(2.0, @si.second),
-  @quantity.Quantity::new(0.1, @si.second),
+  @qsi.seconds(2.0),
+  @qsi.seconds(0.1),
 )
 
 let speed = distance.div(time)
@@ -66,8 +66,8 @@ A compatible uncertainty unit is converted automatically:
 
 ```moonbit
 let length = @measure.MeasuredQuantity::new(
-  @quantity.Quantity::new(10.0, @si.meter),
-  @quantity.Quantity::new(20.0, @geometry.centimeter),
+  @qgeometry.meters(10.0),
+  @qgeometry.centimeters(20.0),
 )
 // Stored as 10.0 ± 0.2 m.
 ```

@@ -6,6 +6,8 @@ import {
 
 import {
   "FrozenLemonTee/LunarUnits/core/dimension",
+  "FrozenLemonTee/LunarUnits/quantities/qgeometry",
+  "FrozenLemonTee/LunarUnits/quantities/qsi",
   "FrozenLemonTee/LunarUnits/units/geometry",
   "FrozenLemonTee/LunarUnits/units/si",
 } for "test"
