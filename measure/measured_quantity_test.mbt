@@ -56,6 +56,26 @@ test "checked constructors return none for invalid inputs" {
 }
 
 ///|
+test "construct from relative uncertainty" {
+  let length = MeasuredQuantity::from_relative(@qgeometry.meters(10.0), 0.02)
+  assert_eq(length.value(), 10.0)
+  assert_eq(length.uncertainty(), 0.2)
+  assert_true(length.unit().is_compatible(@si.meter))
+  let negative = MeasuredQuantity::checked_from_relative(
+    @qgeometry.meters(10.0),
+    -0.02,
+  )
+  assert_true(negative is None)
+  let mut caught = false
+  try
+    MeasuredQuantity::from_relative(@qgeometry.meters(10.0), -0.02) |> ignore
+  catch {
+    NegativeUncertainty => caught = true
+  }
+  assert_true(caught)
+}
+
+///|
 test "conversion converts value and uncertainty" {
   let length = MeasuredQuantity::from_parts(10.0, 0.2, @si.meter)
   let cm = length.to(@geometry.centimeter)
@@ -90,6 +110,9 @@ test "mul propagates relative uncertainty and composes units" {
   assert_eq(area.value(), 6.0)
   assert_close(area.uncertainty(), 0.5)
   assert_true(area.unit().is_compatible(@si.meter.pow(2)))
+  let checked_area = width.checked_mul(height).unwrap()
+  assert_eq(checked_area.value(), area.value())
+  assert_close(checked_area.uncertainty(), area.uncertainty())
 }
 
 ///|
@@ -100,6 +123,9 @@ test "div propagates relative uncertainty and composes units" {
   assert_eq(speed.value(), 5.0)
   assert_close(speed.uncertainty(), 0.26925824035672524)
   assert_true(speed.unit().is_compatible(@si.meter / @si.second))
+  let checked_speed = distance.checked_div(time).unwrap()
+  assert_eq(checked_speed.value(), speed.value())
+  assert_close(checked_speed.uncertainty(), speed.uncertainty())
 }
 
 ///|
@@ -109,9 +135,13 @@ test "pow propagates relative uncertainty" {
   assert_eq(area.value(), 4.0)
   assert_close(area.uncertainty(), 0.4)
   assert_true(area.unit().is_compatible(@si.meter.pow(2)))
+  let checked_area = length.checked_pow(2).unwrap()
+  assert_eq(checked_area.value(), area.value())
+  assert_close(checked_area.uncertainty(), area.uncertainty())
   let one = length.pow(0)
   assert_eq(one.value(), 1.0)
   assert_eq(one.uncertainty(), 0.0)
+  assert_eq(length.checked_pow(0).unwrap().value(), 1.0)
 }
 
 ///|
@@ -125,6 +155,11 @@ test "scale preserves non-negative uncertainty" {
 test "relative paths reject zero nominal values" {
   let zero = MeasuredQuantity::from_parts(0.0, 0.1, @si.meter)
   let other = MeasuredQuantity::from_parts(2.0, 0.1, @si.second)
+  assert_true(zero.checked_relative_uncertainty() is None)
+  assert_true(zero.checked_mul(other) is None)
+  assert_true(other.checked_div(zero) is None)
+  assert_true(zero.checked_pow(2) is None)
+  assert_eq(zero.checked_pow(0).unwrap().uncertainty(), 0.0)
   let mut mul_caught = false
   try zero.mul(other) |> ignore catch {
     ZeroNominalForRelativeUncertainty => mul_caught = true
@@ -148,6 +183,10 @@ test "quantity bridges and formatting" {
   assert_eq(speed.value_quantity().value(), 5.0)
   assert_eq(speed.uncertainty_quantity().value(), 0.3)
   assert_eq(speed.relative_uncertainty(), 0.06)
+  match speed.checked_relative_uncertainty() {
+    Some(relative) => assert_eq(relative, 0.06)
+    None => fail("expected relative uncertainty")
+  }
   assert_eq(format_measured_quantity(speed), "5 ± 0.3 m/s")
   assert_eq(
     format_measured_quantity_with(speed, @unit.FormatStyle::Latex),

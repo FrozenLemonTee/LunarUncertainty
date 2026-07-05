@@ -29,12 +29,18 @@ pub struct MeasuredQuantity {
 } derive(Eq, @debug.Debug)
 pub fn MeasuredQuantity::add(Self, Self) -> Self raise @quantity.DimensionMismatch
 pub fn MeasuredQuantity::checked_add(Self, Self) -> Self?
+pub fn MeasuredQuantity::checked_div(Self, Self) -> Self?
 pub fn MeasuredQuantity::checked_from_parts(Double, Double, @unit.Un) -> Self?
+pub fn MeasuredQuantity::checked_from_relative(@quantity.Quantity, Double) -> Self?
+pub fn MeasuredQuantity::checked_mul(Self, Self) -> Self?
 pub fn MeasuredQuantity::checked_new(@quantity.Quantity, @quantity.Quantity) -> Self?
+pub fn MeasuredQuantity::checked_pow(Self, Int) -> Self?
+pub fn MeasuredQuantity::checked_relative_uncertainty(Self) -> Double?
 pub fn MeasuredQuantity::checked_sub(Self, Self) -> Self?
 pub fn MeasuredQuantity::checked_to(Self, @unit.Un) -> Self?
 pub fn MeasuredQuantity::div(Self, Self) -> Self raise ZeroNominalForRelativeUncertainty
 pub fn MeasuredQuantity::from_parts(Double, Double, @unit.Un) -> Self raise NegativeUncertainty
+pub fn MeasuredQuantity::from_relative(@quantity.Quantity, Double) -> Self raise NegativeUncertainty
 pub fn MeasuredQuantity::mul(Self, Self) -> Self raise ZeroNominalForRelativeUncertainty
 pub fn MeasuredQuantity::new(@quantity.Quantity, @quantity.Quantity) -> Self raise
 pub fn MeasuredQuantity::pow(Self, Int) -> Self raise ZeroNominalForRelativeUncertainty
