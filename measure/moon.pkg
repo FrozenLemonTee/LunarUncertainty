@@ -1,0 +1,11 @@
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+  "FrozenLemonTee/LunarUnits/core/unit",
+  "moonbitlang/core/math",
+}
+
+import {
+  "FrozenLemonTee/LunarUnits/core/dimension",
+  "FrozenLemonTee/LunarUnits/units/geometry",
+  "FrozenLemonTee/LunarUnits/units/si",
+} for "test"

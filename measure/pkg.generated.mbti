@@ -1,0 +1,55 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUncertainty/measure"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+  "FrozenLemonTee/LunarUnits/core/unit",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn format_measured_quantity(MeasuredQuantity) -> String
+
+pub fn format_measured_quantity_with(MeasuredQuantity, @unit.FormatStyle) -> String
+
+// Errors
+pub suberror NegativeUncertainty {
+  NegativeUncertainty
+} derive(Eq, @debug.Debug)
+
+pub suberror ZeroNominalForRelativeUncertainty {
+  ZeroNominalForRelativeUncertainty
+} derive(Eq, @debug.Debug)
+
+// Types and methods
+pub struct MeasuredQuantity {
+  value : Double
+  uncertainty : Double
+  unit : @unit.Un
+} derive(Eq, @debug.Debug)
+pub fn MeasuredQuantity::add(Self, Self) -> Self raise @quantity.DimensionMismatch
+pub fn MeasuredQuantity::checked_add(Self, Self) -> Self?
+pub fn MeasuredQuantity::checked_from_parts(Double, Double, @unit.Un) -> Self?
+pub fn MeasuredQuantity::checked_new(@quantity.Quantity, @quantity.Quantity) -> Self?
+pub fn MeasuredQuantity::checked_sub(Self, Self) -> Self?
+pub fn MeasuredQuantity::checked_to(Self, @unit.Un) -> Self?
+pub fn MeasuredQuantity::div(Self, Self) -> Self raise ZeroNominalForRelativeUncertainty
+pub fn MeasuredQuantity::from_parts(Double, Double, @unit.Un) -> Self raise NegativeUncertainty
+pub fn MeasuredQuantity::mul(Self, Self) -> Self raise ZeroNominalForRelativeUncertainty
+pub fn MeasuredQuantity::new(@quantity.Quantity, @quantity.Quantity) -> Self raise
+pub fn MeasuredQuantity::pow(Self, Int) -> Self raise ZeroNominalForRelativeUncertainty
+pub fn MeasuredQuantity::relative_uncertainty(Self) -> Double
+pub fn MeasuredQuantity::scale(Self, Double) -> Self
+pub fn MeasuredQuantity::sub(Self, Self) -> Self raise @quantity.DimensionMismatch
+pub fn MeasuredQuantity::to(Self, @unit.Un) -> Self raise @quantity.DimensionMismatch
+pub fn MeasuredQuantity::uncertainty(Self) -> Double
+pub fn MeasuredQuantity::uncertainty_quantity(Self) -> @quantity.Quantity
+pub fn MeasuredQuantity::unit(Self) -> @unit.Un
+pub fn MeasuredQuantity::value(Self) -> Double
+pub fn MeasuredQuantity::value_quantity(Self) -> @quantity.Quantity
+pub impl Show for MeasuredQuantity
+
+// Type aliases
+
+// Traits
+
